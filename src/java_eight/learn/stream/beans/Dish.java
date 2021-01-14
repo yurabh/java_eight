@@ -1,6 +1,7 @@
 package java_eight.learn.stream.beans;
 
 public class Dish {
+
     private String name;
     private boolean vegetarian;
     private int calories;
@@ -37,7 +38,6 @@ public class Dish {
     public void setType(Type type) {
         this.type = type;
     }
-
 
     public String getName() {
         return name;

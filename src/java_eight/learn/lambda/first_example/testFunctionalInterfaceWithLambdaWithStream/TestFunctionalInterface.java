@@ -1,4 +1,4 @@
-package java_eight.learn.lambda.testFunctionalInterfaceWithLambdaWithStream;
+package java_eight.learn.lambda.first_example.testFunctionalInterfaceWithLambdaWithStream;
 
 import java_eight.Apple;
 
@@ -20,7 +20,7 @@ public class TestFunctionalInterface {
 
         Calculatable calculatable = (v1, v2) -> {
             array[0] = 7;
-            apple.setColor("blue");
+//            apple.setColor("blue");
 //            apple1 = apple;
 //            array[1] = 4;
             int sum = v1 + result + v2;
@@ -28,6 +28,7 @@ public class TestFunctionalInterface {
         };
 
         int sum = calculatable.sum(5, 8);
+
         System.out.println(sum);
 
         Function<String, Integer> function = Integer::parseInt;
@@ -56,7 +57,6 @@ public class TestFunctionalInterface {
 
         list.stream().filter(s -> s.contains(String.valueOf('o'))).forEach(consumer);
     }
-
 
     public static void cons(List<String> list, Consumer<String> tConsumer) {
         for (String s : list) {

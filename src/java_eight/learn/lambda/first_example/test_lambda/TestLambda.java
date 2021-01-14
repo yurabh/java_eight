@@ -1,8 +1,8 @@
-package java_eight.learn.lambda.test_lambda;
+package java_eight.learn.lambda.first_example.test_lambda;
 
 import java_eight.Apple;
-import java_eight.learn.lambda.functional_interface.BufferedReaderProcessor;
-import java_eight.learn.lambda.functional_interface.TriFunction;
+import java_eight.learn.lambda.first_example.functional_interface.BufferedReaderProcessor;
+import java_eight.learn.lambda.first_example.functional_interface.TriFunction;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -14,9 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.*;
-import java.util.function.Predicate;
-
-import static java.util.Locale.filter;
 
 public class TestLambda {
 
@@ -26,6 +23,7 @@ public class TestLambda {
             return o1.getWeight().compareTo(o2.getWeight());
         }
     };
+
 
     public static void runnable(Runnable runnable) {
         runnable.run();
@@ -169,14 +167,7 @@ public class TestLambda {
         }
 
 
-        List<String> list = new ArrayList<>();
-
-        list.add("Yura");
-        list.add("Andriy");
-        list.add("Katja");
-        list.add("");
-        list.add("loxa");
-
+        List<String> list = Arrays.asList("kola", "ola", "kata", "", "zara");
 
         List<String> greenApples = filter(list, (String a) -> "green".equals("yura"));
 
@@ -188,16 +179,9 @@ public class TestLambda {
             System.out.println(listNew);
         }
 
-
-        List<Integer> listInteger = new ArrayList<>();
-
-        listInteger.add(1);
-        listInteger.add(2);
-        listInteger.add(3);
-        listInteger.add(4);
+        List<Integer> listInteger = Arrays.asList(1, 2, 3, 4);
 
         foreach(listInteger, (Integer a) -> System.out.println(a + a));
-
 
         IntPredicate intPredicate = (int i) -> i % 2 == 0;
 

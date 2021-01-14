@@ -1,4 +1,4 @@
-package java_eight.learn.lambda.functional_interface;
+package java_eight.learn.lambda.first_example.functional_interface;
 
 import java.io.BufferedReader;
 import java.io.IOException;

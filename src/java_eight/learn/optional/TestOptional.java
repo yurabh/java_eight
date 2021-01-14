@@ -12,13 +12,21 @@ public class TestOptional {
 
         Optional<Car> optionalCarTwo = Optional.of(car);
 
+        System.out.println(optionalCar);
+
+        System.out.println(optionalCarTwo);
+
         Optional<Car> optionalCarThree = Optional.ofNullable(car);
+
+        System.out.println(optionalCarThree);
 
         Incuruanse incuruanse = new Incuruanse();
 
         Optional<Incuruanse> optInsurance = Optional.ofNullable(incuruanse);
 
         Optional<String> name = optInsurance.map(Incuruanse::getName);
+
+        System.out.println(name);
 
         Person person = new Person();
 
@@ -27,5 +35,7 @@ public class TestOptional {
                 optPerson.flatMap(Person::getCarAsOptional)
                         .flatMap(Car::getInsurance)
                         .map(Incuruanse::getName);
+
+        System.out.println(name1);
     }
 }

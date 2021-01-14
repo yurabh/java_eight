@@ -1,7 +1,7 @@
 package java_eight.learn.behavior_parametrazation.java8.test_behavior_parametrazation;
 
 import java_eight.Apple;
-import java_eight.learn.lambda.functional_interface.Predicate;
+import java_eight.learn.lambda.first_example.functional_interface.Predicate;
 
 import java.util.ArrayList;
 import java.util.Arrays;

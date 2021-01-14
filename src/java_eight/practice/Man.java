@@ -22,7 +22,6 @@ public class Man {
         this.address = address;
     }
 
-
     public String getName() {
         return name;
     }
@@ -88,7 +87,6 @@ public class Man {
     public int hashCode() {
         return Objects.hash(name, surname, firstName, age, countChild, address);
     }
-
 
     @Override
     public String toString() {

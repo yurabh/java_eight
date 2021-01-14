@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.*;
 
 public class TestStream {
+
     public static void main(String[] args) {
 
         Dish dish = new Dish("Pasta", true, 1000, Dish.Type.FISH);
@@ -66,7 +67,7 @@ public class TestStream {
         }
 
 
-        List<String> lowCarolicsiDishName = menu.stream()
+        List<String> lowCaloricDishNameTwo = menu.stream()
                 .filter((d) -> d.getCalories() < 1000)
                 .filter((d) -> d.getName().equals("Omlet"))
                 .sorted(comparing(Dish::getCalories))
@@ -74,7 +75,7 @@ public class TestStream {
                 .collect(toList());
 
 
-        lowCarolicsiDishName.stream()
+        lowCaloricDishNameTwo.stream()
                 .forEach((String s) -> System.out.println(s));
 
 
@@ -105,16 +106,19 @@ public class TestStream {
         stream.forEach((d -> System.out.println(d)));
 
 
-        List<String> debaging = menuDish.stream().filter(d -> {
+        List<String> menuDishes = menuDish
+                .stream()
+                .filter(d -> {
+                    System.out.println(" maping : " + d.getName());
+                    return d.getCalories() > 300;
+                })
+                .map(d -> {
+                    System.out.println(" maping : " + d.getName());
+                    return d.getName();
+                })
+                .collect(toList());
 
-            System.out.println(" maping : " + d.getName());
-            return d.getCalories() > 300;
-        }).map(d -> {
-            System.out.println(" maping : " + d.getName());
-            return d.getName();
-        }).collect(toList());
-
-        System.out.println(debaging);
+        System.out.println(menuDishes);
 
 
         List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4223);
@@ -124,7 +128,8 @@ public class TestStream {
                 .forEach((Integer i) -> System.out.println(i));
 
 
-        List<Dish> dishes = menuDish.stream()
+        List<Dish> dishes = menuDish
+                .stream()
                 .filter(d -> d.getCalories() < 390)
                 .limit(3)
                 .collect(toList());
@@ -132,7 +137,8 @@ public class TestStream {
         System.out.println(dishes);
 
 
-        List<Dish> dishesNew = menuDish.stream()
+        List<Dish> dishesNew = menuDish
+                .stream()
                 .filter(d -> d.getCalories() > 300)
                 .skip(2)
                 .collect(toList());
@@ -140,7 +146,8 @@ public class TestStream {
         System.out.println(dishesNew);
 
 
-        List<String> dishNames = menuDish.stream()
+        List<String> dishNames = menuDish
+                .stream()
                 .map(Dish::getName)
                 .collect(toList());
 
@@ -151,14 +158,16 @@ public class TestStream {
         List<String> words = Arrays.asList("Java8", "Lambdas", "In", "Action");
 
 
-        List<Integer> wordLengths = words.stream()
+        List<Integer> wordLengths = words
+                .stream()
                 .map((String l) -> l.length())
                 .collect(toList());
 
         System.out.println(wordLengths);
 
 
-        List<Integer> dishNameLengths = menu.stream()
+        List<Integer> dishNameLengths = menu
+                .stream()
                 .map(Dish::getName)
                 .map(String::length)
                 .collect(toList());
@@ -166,35 +175,46 @@ public class TestStream {
         System.out.println(dishNameLengths);
 
 
-        List<String[]> strings = words.stream()
+        List<String[]> strings = words
+                .stream()
                 .map(word -> word.split(""))
                 .distinct()
                 .collect(toList());
 
 
-        menuDish.stream().filter(Dish::isVegetarian)
+        menuDish.
+                stream()
+                .filter(Dish::isVegetarian)
                 .findAny()
                 .ifPresent(d -> System.out.println(d.getName()));
 
 
-        boolean isNonHealthy = menuDish.stream()
+        boolean isNonHealthy = menuDish
+                .stream()
                 .allMatch(d -> d.getCalories() < 10);
 
         System.out.println(isNonHealthy);
 
 
-        boolean isHealthy = menu.stream()
+        boolean isHealthy = menu
+                .stream()
                 .noneMatch(d -> d.getCalories() <= 1000);
 
         System.out.println(isHealthy);
 
 
-        Optional<Dish> anyDishes = menuDish.stream().filter(Dish::isVegetarian).findAny();
+        Optional<Dish> anyDishes = menuDish
+                .stream()
+                .filter(Dish::isVegetarian)
+                .findAny();
+
         anyDishes.ifPresent(d -> System.out.println(d));
 
 
         List<Integer> someNumbers = Arrays.asList(1, 2, 3, 4, 5);
-        Optional<Integer> firstSquareDivisibleByThree = someNumbers.stream()
+
+        Optional<Integer> firstSquareDivisibleByThree = someNumbers
+                .stream()
                 .map(x -> x * x)
                 .filter(x -> x % 3 == 0)
                 .findFirst();
@@ -224,7 +244,8 @@ public class TestStream {
 
         System.out.println(maxOptional);
 
-        int count = menu.stream()
+        int count = menu
+                .stream()
                 .map(d -> 1)
                 .reduce(0, (a, b) -> a + b);
 
@@ -246,7 +267,8 @@ public class TestStream {
         );
 
 
-        List<Transaction> transactionsNew = transactions.stream()
+        List<Transaction> transactionsNew = transactions
+                .stream()
                 .filter(transaction -> transaction.getYear() == 2011)
                 .sorted(comparing(Transaction::getValue))
                 .collect(toList());
@@ -254,7 +276,8 @@ public class TestStream {
         System.out.println(transactionsNew);
 
 
-        List<String> cities = transactions.stream()
+        List<String> cities = transactions
+                .stream()
                 .map(transaction -> transaction.getTrader().getCity())
                 .distinct()
                 .collect(toList());
@@ -262,14 +285,16 @@ public class TestStream {
         System.out.println(cities);
 
 
-        Set<String> citiesTwo = transactions.stream()
+        Set<String> citiesTwo = transactions
+                .stream()
                 .map(transaction -> transaction.getTrader().getCity())
                 .collect(toSet());
 
         System.out.println(citiesTwo);
 
 
-        List<Trader> traders = transactions.stream()
+        List<Trader> traders = transactions
+                .stream()
                 .map(transaction -> transaction.getTrader())
                 .filter(trader -> trader.getName().equals("Cambridge"))
                 .distinct()
@@ -279,7 +304,8 @@ public class TestStream {
         System.out.println(traders);
 
 
-        String traderString = transactions.stream()
+        String traderString = transactions
+                .stream()
                 .map(transaction -> transaction.getTrader().getName())
                 .distinct()
                 .sorted()
@@ -289,59 +315,71 @@ public class TestStream {
         System.out.println(traderString);
 
 
-        String traderStr =
-                transactions.stream()
-                        .map(transaction -> transaction.getTrader().getName())
-                        .distinct()
-                        .sorted()
-                        .collect(joining());
+        String traderStr = transactions
+                .stream()
+                .map(transaction -> transaction.getTrader().getName())
+                .distinct()
+                .sorted()
+                .collect(joining());
 
 
-        boolean milanBased = transactions.stream()
+        boolean milanBased = transactions
+                .stream()
                 .anyMatch(transaction -> transaction.getTrader().getCity().equals("Milan"));
         System.out.println(milanBased);
 
 
-        transactions.stream().filter(tr -> "Cambridge".equals(tr.getTrader().getCity()))
+        transactions
+                .stream()
+                .filter(tr -> "Cambridge".equals(tr.getTrader().getCity()))
                 .map(Transaction::getValue)
                 .forEach(System.out::println);
 
 
-        Optional<Integer> hightsLevelOfTransactions = transactions.stream()
+        Optional<Integer> hightsLevelOfTransactions = transactions
+                .stream()
                 .map(Transaction::getValue)
                 .reduce(Integer::max);
 
         System.out.println(hightsLevelOfTransactions);
 
 
-        Optional<Transaction> minValueTransaction = transactions.stream()
+        Optional<Transaction> minValueTransaction = transactions
+                .stream()
                 .reduce((t1, t2) -> t1.getValue() < t2.getValue() ? t1 : t2);
 
 
-        Optional<Transaction> smallestTransaction = transactions.stream()
+        Optional<Transaction> smallestTransaction = transactions
+                .stream()
                 .min(comparing(Transaction::getValue));
 
         System.out.println(smallestTransaction);
 
-        int calories = menuDish.stream()
+        int calories = menuDish
+                .stream()
                 .mapToInt(Dish::getCalories).sum();
 
         System.out.println(calories);
 
 
-        IntStream intStream = menu.stream()
+        IntStream intStream = menu
+                .stream()
                 .mapToInt(Dish::getCalories);
 
         Stream<Integer> streamboxed = intStream.boxed();
 
-        OptionalInt maxCalories = menuDish.stream().mapToInt(Dish::getCalories).max();
+        OptionalInt maxCalories = menuDish
+                .stream()
+                .mapToInt(Dish::getCalories).max();
 
         System.out.println(maxCalories);
 
         int max = maxCalories.orElse(20);
 
 
-        IntStream eventsNumber = IntStream.rangeClosed(1, 100).filter(i -> i % 2 == 0);
+        IntStream eventsNumber = IntStream
+                .rangeClosed(1, 100)
+                .filter(i -> i % 2 == 0);
 
         long countNumber = eventsNumber.count();
 
@@ -358,9 +396,9 @@ public class TestStream {
         System.out.println(emptyStream);
 
 
-        int numberes[] = {1, 2, 3, 4, 5, 6};
+        int numbersTwo[] = {1, 2, 3, 4, 5, 6};
 
-        int number = Arrays.stream(numberes).sum();
+        int number = Arrays.stream(numbersTwo).sum();
 
         System.out.println(number);
 
@@ -382,8 +420,7 @@ public class TestStream {
 
 
         Stream<Double> generate = Stream.generate(Math::random);
-        generate.limit(5)
-                .forEach(System.out::println);
+        generate.limit(5).forEach(System.out::println);
 
 
         IntStream generate1 = IntStream.generate(new IntSupplier() {
@@ -412,49 +449,61 @@ public class TestStream {
                 .forEach(System.out::println);
 
 
-        Collector collector;
-        Collectors collections;
+        Collector collector = null;
+
+        Collectors collections = null;
 
 
-        List<Transaction> transactions1 = transactions.stream()
+        List<Transaction> transactions1 = transactions
+                .stream()
                 .collect(Collectors.toList());
+
         System.out.println(transactions1);
 
-        long howManyDishes = menu.stream()
+        long howManyDishes = menu
+                .stream()
                 .collect(Collectors.counting());
 
         System.out.println(howManyDishes);
 
-        long howManyDishe1 = menu.stream()
+        long howManyDishesTwo = menu
+                .stream()
                 .count();
 
-        System.out.println(howManyDishe1);
+        System.out.println(howManyDishesTwo);
 
         Comparator<Dish> dishCaloriesComparator = comparingInt(Dish::getCalories);
 
-        Optional<Dish> mostCalorieDish = menu.stream()
+        Optional<Dish> mostCalorieDish = menu
+                .stream()
                 .collect(maxBy(dishCaloriesComparator));
 
-        double totalCalories = menu.stream().collect(summingInt(Dish::getCalories));
+        double totalCalories = menu
+                .stream()
+                .collect(summingInt(Dish::getCalories));
 
-        double avgCalories = menu.stream()
+        double avgCalories = menu
+                .stream()
                 .collect(averagingInt(Dish::getCalories));
 
-        IntSummaryStatistics menuStatistics = menu.stream()
+        IntSummaryStatistics menuStatistics = menu
+                .stream()
                 .collect(summarizingInt(Dish::getCalories));
 
 
-        String shortMenu = menu.stream()
+        String shortMenu = menu
+                .stream()
                 .map(Dish::getName)
                 .collect(joining());
 
         System.out.println(shortMenu);
 
-
-        String shorMenu = menu.stream()
+        String shortMenuSecond = menu
+                .stream()
                 .map(Dish::getName)
                 .collect(joining(", "));
-        System.out.println(shorMenu);
+
+        System.out.println(shortMenuSecond);
 
 
         int totalCalories2 = menu.stream()
@@ -475,6 +524,7 @@ public class TestStream {
         int totalCalories3 = menu.stream()
                 .map(Dish::getCalories)
                 .reduce(Integer::sum).get();
+
         System.out.println(totalCalories3);
 
 
@@ -495,7 +545,8 @@ public class TestStream {
         System.out.println(numbersNew);
 
 
-        int totalCalories4 = menu.stream()
+        int totalCalories4 = menu
+                .stream()
                 .mapToInt(Dish::getCalories).sum();
 
         System.out.println(totalCalories4);
@@ -558,8 +609,8 @@ public class TestStream {
                         toCollection(HashSet::new))));
 
 
-        Map<Boolean, List<Dish>> partionedMenu = menu.stream().collect(partitioningBy(Dish::isVegetarian));
-        List<Dish> vegetarianDishes = partionedMenu.get(true);
+        Map<Boolean, List<Dish>> menuSecond = menu.stream().collect(partitioningBy(Dish::isVegetarian));
+        List<Dish> vegetarianDishes = menuSecond.get(true);
 
         List<Dish> vegetarianDishes1 = menu.stream().filter(Dish::isVegetarian).collect(toList());
 
@@ -571,9 +622,6 @@ public class TestStream {
                         collectingAndThen(
                                 maxBy(comparingInt(Dish::getCalories)),
                                 Optional::get)));
-
-
-        List<Dish> menuStream = new ArrayList<>();
     }
 
 
@@ -591,4 +639,3 @@ public class TestStream {
         DIET, NORMAL, FAT
     }
 }
-
