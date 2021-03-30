@@ -4,101 +4,101 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+
+class Person {
+    private String firstName;
+    private String lastName;
+    private int children;
+
+    public Person(Man man) {
+        firstName = man.getFirstName();
+        lastName = man.getSurname();
+        children = man.getCountChild();
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", children=" + children +
+                '}';
+    }
+}
 
 public class TestPractice {
 
     public static void main(String[] args) {
-        Man man = new Man("Yura", "bh", "ge", 12, 2,
-                new Address("Ukraine", "Lviv", "Suxiv"));
+        Man man = new Man("Yura", "bh", "Uk", 33, 2,
+                new Address("Ukraine", "Lviv", "Suchiv"));
 
-        Man man1 = new Man("Andriy", "Valevskiy", "Dnipro", 26, 3,
-                new Address("Ukraine", "Dnipro", "Gorodocjka"));
+        Man manOne = new Man("Andriy", "Valevskiy", "Dnipro", 26, 3,
+                new Address("Canada", "Dnipro", "Gorodocjka"));
 
         List<Man> men = new LinkedList<>();
         men.add(man);
-        men.add(man1);
+        men.add(manOne);
 
-
-        System.out.println("Mans");
-        men.stream().forEach((Man man3) -> System.out.println(man3));
-
-        System.out.println("Address of Mans");
-
-        men.stream().forEach(m -> System.out.println(m.getAddress()));
-
-
-        System.out.println("SELECT firstName, lastName, countOfChildren FROM Man WHERE age >= 20 ORDER BY firstName");
-
-        class Person {
-
-            private String firstName;
-            private String lastName;
-            private int childs;
-
-            public Person(String firstName, String lastName, int childs) {
-                this.firstName = firstName;
-                this.lastName = lastName;
-                this.childs = childs;
-            }
-
-            public Person(Man man) {
-                firstName = man.getFirstName();
-                lastName = man.getSurname();
-                childs = man.getCountChild();
-            }
-
-            @Override
-            public String toString() {
-                return "Person{" +
-                        "firstName='" + firstName + '\'' +
-                        ", lastName='" + lastName + '\'' +
-                        ", childs=" + childs +
-                        '}';
-            }
-        }
+        men.forEach(System.out::println);
+        men.forEach(m -> System.out.println(m.getAddress()));
 
         men.stream()
-                .filter(m -> m.getAge() > 20)
                 .sorted(Comparator.comparing(Man::getFirstName))
+                .filter(m -> m.getAge() > 20)
                 .map(Person::new)
                 .forEach(System.out::println);
 
 
-        System.out.println();
-
-        List<Man> ukaraine = men.stream()
-                .filter((Man man10) -> man10.getAge() > 25 &&
-                        man10.getCountChild() == 3 && man10.getAddress().getCountry().equals("Ukraine"))
-                .collect(toList());
-
-        System.out.println("dsds");
-        System.out.println(ukaraine.toString());
+        final List<Man> canada = men.stream()
+                .sorted(Comparator.comparing(Man::getFirstName))
+                .filter(m -> m.getAddress().getCountry().equals("Canada") &&
+                        m.getAddress().getStreet().equals("3")
+                        || m.getAge() > 25).collect(Collectors.toList());
+        System.out.println(canada);
 
 
         System.out.println("SELECT count(*) FROM Man GROUP BY countOfChildren");
+        Map<Integer, List<Man>> countOfChildren =
+                men.stream()
+                        .collect(groupingBy(Man::getCountChild));
+        System.out.println(countOfChildren);
 
-        Map<Integer, List<Man>> countOfCildren = men.stream()
-                .collect(groupingBy(Man::getCountChild));
 
-
-        System.out.println(
-                "SELECT count(*) FROM Man GROUP BY countOfChildren, age");
-
-        men
+        System.out.println("SELECT count(*) FROM Man GROUP BY countOfChildren, age");
+        final Map<AbstractMap.SimpleEntry<Integer, Integer>, Long> collect = men
                 .stream()
                 .collect(Collectors.groupingBy(m ->
-                                new AbstractMap.SimpleEntry<>(m.getCountChild(), m.getAge()),
-                        Collectors.counting()))
+                        new AbstractMap.SimpleEntry<>(m.getCountChild(),
+                                m.getAge()), Collectors.counting()));
+
+        System.out.println(collect);
 
 
+        final Map<AbstractMap.SimpleEntry<String, String>, Long> collectOne = men.
+                stream()
+                .collect(Collectors.groupingBy(m ->
+                        new AbstractMap.SimpleEntry<>(m.getAddress().getCity(),
+                                m.getAddress().getStreet()), Collectors.counting()));
+
+        System.out.println(collectOne);
+
+        collectOne
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue() > 4)
-                .forEach(e -> System.out.println("Count childs " + e.getKey().getKey() + " age = " +
-                        e.getKey().getValue() + " count = " + e.getValue()));
+                .forEach(System.out::println);
 
 
+        System.out.println("UPDATE Man SET firstName = 'John', lastName = 'Kenedi'," +
+                " countOfChildren = 3 WHERE country == 'US' (or another country)");
+
+        men.forEach(m -> {
+            m.setFirstName("John");
+            m.getAddress().setCountry("US");
+            m.setName("Kenedi");
+            m.setCountChild(3);
+        });
+
+        men.forEach(System.out::println);
     }
 }
